@@ -1,0 +1,17 @@
+{
+  "name": "todo_app",
+  "version": "1.0.0",
+  "description": "A express.js todo list backend api demo",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node src/app.js"
+  },
+  "author": "skin547",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2"
+  }
+}
