@@ -1,4 +1,3 @@
-const User = require("../../entites/user")
 const UserRepository = require("../../framework/repository/userRepository")
 
 module.exports = class GetUserUseCase {
