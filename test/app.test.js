@@ -1,32 +1,38 @@
 const chai = require("chai")
 const chaiHttp = require('chai-http')
-chai.use(chaiHttp);
-
-const expect = chai.expect
-
-const app = require("../src/app")
 
 
-describe(" test express app", () => {
+describe(" test express app", function(){
+
+    const expect = chai.expect
+    chai.use(chaiHttp);
+
+    let app
+    const apiDomain = "/api"
+    const itemEndpoint = apiDomain + "/items"
+
+    this.timeout(10000); 
 
     let request;
 
     before( () => {
+        app = require("../src/app")
         request = chai.request(app).keepOpen()
 
         let numberOfData = 10
-        generateTestData( numberOfData, request )
+        generateTestData(itemEndpoint, numberOfData, request )
     })
 
     after( ( ) => {
         request.close();
+        app.close();
     })
 
     describe('/GET items', () => {
 
         it("should return an array of items ", ( done ) => {
             request
-            .get('/items')
+            .get(itemEndpoint)
             .end((err, response) => {
                 expect( response ).to.have.status(200)
                 expect( response.body ).to.be.an('array')
@@ -38,7 +44,7 @@ describe(" test express app", () => {
         it("should return an json of item ", ( done ) => {
             let itemId = 1
             request
-            .get('/items/' + itemId)
+            .get(itemEndpoint +"/" + itemId)
             .end((err, response) => {
                 expect( response ).to.have.status(200)
                 expect( response.body ).to.be.a('object')
@@ -49,14 +55,14 @@ describe(" test express app", () => {
     })
 
     describe('/POST items', () => {
-        it('it should not POST a book without pages field', (done) => {
+        it('should return an object if created successful', (done) => {
             let item = {
                 content : "test",
                 owner : "Frank"
             }
             
             request
-            .post("/items")
+            .post(itemEndpoint)
             .send(item)
             .end( (err, response) => {
                 expect( response ).to.have.status(201)
@@ -69,11 +75,30 @@ describe(" test express app", () => {
                 done()
             })
         });
+
+        it('can handle 10000 of data', async () => {
+            let item = {
+                content : "strees",
+                owner : "tester"
+            }
+
+            for( let i = 0 ; i < 10000 ; i++ ){
+                await request
+                .post(itemEndpoint)
+                .send(item)
+            }
+
+            request
+            .get(itemEndpoint)
+            .end( (err, response) => {
+                expect( response.body.length - 11).to.equal( 10000 )
+            })
+        })
     });
   
 })
 
-generateTestData = ( numberOfData, requester ) => {
+generateTestData = (itemEndpoint, numberOfData, requester ) => {
 
     let item = {
         content : "for test",
@@ -81,7 +106,7 @@ generateTestData = ( numberOfData, requester ) => {
     }
 
     for( let i = 0 ; i < numberOfData ; i++ ){
-        requester.post("/items")
+        requester.post(itemEndpoint)
         .send( item )
         .end()
     }
