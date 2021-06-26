@@ -23,6 +23,7 @@ module.exports = class MockUserRepository extends UserRepository {
         return new Promise( ( resolve ) => {
             this.users.forEach( user => {
                 if( user.email === email ){
+                    delete user.password
                     resolve( user )
                 }
             })

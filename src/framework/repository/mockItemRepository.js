@@ -4,7 +4,6 @@ const ItemRepository = require("./itemRepository");
 module.exports = class MockItemRepository extends ItemRepository {
 
     constructor(){
-        console.log( "Initializing MockItemRepository...")
         super()
         this.currentId = 1
         this.items = []

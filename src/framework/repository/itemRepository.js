@@ -1,5 +1,9 @@
 module.exports = class ItemRepository {
 
+    constructor(){
+        console.log( `Initializing ${this.constructor.name}...`)
+    }
+
     insert( itemInstance ){
         throw new Error( "not implemented" )
     }
