@@ -1,13 +1,17 @@
 const express = require('express')
+const http = require("http")
 
-const itemRouter = require("./framework/web/router/itemRouter")
+const apiRouter = require("./framework/web/router/apiRouter")
 
 const app = express()
 
 app.use( express.urlencoded( { extended : true } ) )
 app.use( express.json() )
-app.use('/items', itemRouter)
+app.use('/api', apiRouter)
 
-const port = 3000
+const port = 8000
 
-module.exports = app.listen( port, () => console.log( "starting server" ) );
+// module.exports = app.listen( port, () => console.log( "starting server" ) );
+const server = http.createServer( app );
+
+module.exports = server.listen( port, () => console.log( `server running on port ${port}`) );
