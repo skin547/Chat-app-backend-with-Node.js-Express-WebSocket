@@ -1,13 +1,14 @@
 const express = require("express")
+const itemRouter = require("./itemRouter")
 
 
 const apiRouter = () => {
     const router = express.Router()
 
-    router.get("/item", itemRouter)
+    router.use("/items", itemRouter)
     
     return router
 }
 
 
-module.exports = apiRouter
+module.exports = apiRouter()
