@@ -32,18 +32,20 @@ describe( "Test user usecase", () => {
     })
 
     describe( "Get user usecase", () => {
-        it("should return user instance with email", async () => {
+        it("should return user instance with email and does not have password", async () => {
             let email = "already@exist.com"
             let expectedName = "test"
             let user = await getUser.byEmail( email )
             expect( user.name ).to.equal( expectedName )
+            expect( user ).to.not.have.property( "password" )
         })
 
-        it("should return user instance with id 1", async () => {
+        it("should return user instance with id 1 and does not have password", async () => {
             let id = 1
             let expectedName = "test"
             let user = await getUser.byId( id )
             expect( user.name ).to.equal( expectedName )
+            expect( user ).to.not.has.property( "password" )
         })
     } )
 })
