@@ -1,5 +1,3 @@
-const User = require("../../entites/user")
-
 module.exports = class AddUserUseCase {
 
     constructor( userRepository ){
@@ -11,6 +9,7 @@ module.exports = class AddUserUseCase {
         return new Promise( async ( resolve, reject ) => {
             this.userRepository.getUserByEmail( email )
             .then( () => reject( { error : "email already exist" } ) )
+            .catch( error => error )
             
             let data = await this.userRepository.insert( name, email, password )
             resolve( data )

@@ -41,11 +41,11 @@ describe( "Test user usecase", () => {
         })
 
         it("should return user instance with id 1 and does not have password", async () => {
-            let id = 1
-            let expectedName = "test"
+            let id = 2
+            let expectedName = "test2"
             let user = await getUser.byId( id )
             expect( user.name ).to.equal( expectedName )
-            expect( user ).to.not.has.property( "password" )
+            expect( user ).to.not.have.property( "password" )
         })
     } )
 })

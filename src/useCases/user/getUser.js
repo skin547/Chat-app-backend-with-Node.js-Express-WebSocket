@@ -8,10 +8,14 @@ module.exports = class GetUserUseCase {
     }
 
     async byEmail( email ) {
-        return this.userRepository.getUserByEmail( email )
+        let result = await this.userRepository.getUserByEmail( email )
+        delete result.password
+        return result
     }
 
     async byId( id ) {
-        return this.userRepository.getUserById( id )
+        let result = await this.userRepository.getUserById( id )
+        delete result.password
+        return result
     }
 }
