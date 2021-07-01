@@ -3,7 +3,6 @@ const express = require("express")
 const ItemController = require("../../../controller/itemController")
 const MockItemRepo = require("../../repository/mockItemRepository")
 
-const Logger = require("../middleware/logger")
 const ErrorHandler = require("../middleware/errorHandler")
 
 itemRouter = () => {
@@ -11,8 +10,6 @@ itemRouter = () => {
 
     let itemRepo = new MockItemRepo()
     let itemController = ItemController( itemRepo )
-
-    router.use( Logger )
 
     router.get("/", itemController.getAllItems )
     router.post("/", itemController.addNewItem )
