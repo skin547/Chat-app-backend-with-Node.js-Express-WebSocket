@@ -10,6 +10,7 @@ describe(" test express app", function(){
     let app
     const apiDomain = "/api"
     const itemEndpoint = apiDomain + "/items"
+    const userEndpoint = apiDomain + "/users"
 
     this.timeout(10000); 
 
@@ -28,7 +29,7 @@ describe(" test express app", function(){
         app.close();
     })
 
-    describe('/GET items', () => {
+    describe('GET /items', () => {
 
         it("should return an array of items ", ( done ) => {
             request
@@ -54,7 +55,7 @@ describe(" test express app", function(){
         })
     })
 
-    describe('/POST items', () => {
+    describe('POST /items', () => {
         it('should return an object if created successful', (done) => {
             let item = {
                 content : "test",
@@ -76,7 +77,7 @@ describe(" test express app", function(){
             })
         });
 
-        it('can handle 10000 of data', async () => {
+        xit('can handle 10000 of data', async () => {
             let item = {
                 content : "strees",
                 owner : "tester"
@@ -95,6 +96,45 @@ describe(" test express app", function(){
             })
         })
     });
+
+    describe(" POST /users", () => {
+        it("sign up with api/users/signup", (done) => {
+            let user = {
+                username : "test",
+                email : "test@test.com",
+                password: "test1234"
+            }
+            request
+            .post( userEndpoint + "/signup" )
+            .send( user )
+            .end( ( err, response ) => {
+                if( err ){
+                    throw new Error("test failed")
+                }
+                expect( response.status ).to.equal( 201 )
+                done()
+            })
+        })
+
+        it("should return token after login with api/users/login", (done) => {
+            let user = {
+                username : "test",
+                email : "test@test.com",
+                password: "test1234"
+            }
+            request
+            .post( userEndpoint + "/login" )
+            .send( user )
+            .end( ( err, response ) => {
+                if( err ){
+                    throw new Error("test failed")
+                }
+                expect( response.status ).to.equal( 200 )
+                expect( response.body ).to.be.a("String")
+                done()
+            })
+        })
+    })
   
 })
 
