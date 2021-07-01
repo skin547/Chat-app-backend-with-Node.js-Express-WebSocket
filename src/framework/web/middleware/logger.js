@@ -1,6 +1,9 @@
-logger = (requset, response, next) => {
-    console.log(requset.headers['x-forwarded-for'] || requset.connection.remoteAddress);
-    console.log(new Date().toLocaleDateString());
+logger = (request, response, next) => {
+    from = request.headers['x-forwarded-for'] || request.connection.remoteAddress
+    date = new Date().toLocaleString()
+    method = request.method
+    url = request.url
+    console.log(`${date} | ${from} | ${method} ${url}`);
     next();
 };
 
