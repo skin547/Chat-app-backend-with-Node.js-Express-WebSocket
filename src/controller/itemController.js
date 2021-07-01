@@ -7,7 +7,6 @@ module.exports = (itemRepo) => {
     const addItem = new AddItemUseCase( itemRepo )
 
     const getAllItems = ( request, response, next ) => {
-        console.log( "get all items ")
         getItem.getAll( )
         .then( res => response.json( res ) )
         .catch( error => next() )
@@ -15,7 +14,6 @@ module.exports = (itemRepo) => {
 
     const getItemById = ( request, response, next ) => {
         const targetId = request.params.itemId
-        console.log( targetId )
         getItem.byId( targetId )
         .then( res => response.json( res ) )
         .catch( error => next( error ) )

@@ -12,7 +12,6 @@ module.exports = class GetItemUseCase {
     }
 
     async byId( id ) {
-        console.log( "get item by id: " + id )
         return this.itemRepository.getItemById( id )
     }
 
