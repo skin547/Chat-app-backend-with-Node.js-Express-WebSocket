@@ -8,7 +8,7 @@ module.exports = class ItemRepository {
         throw new Error( "not implemented" )
     }
 
-    getAll(){
+    getAll( queries){
         throw new Error( "not implemented" )
     }
 
@@ -21,6 +21,10 @@ module.exports = class ItemRepository {
     }
 
     getItemsByOwner( owner ){
+        throw new Error( "not implemented" )
+    }
+
+    updateItem( item ){
         throw new Error( "not implemented" )
     }
 }

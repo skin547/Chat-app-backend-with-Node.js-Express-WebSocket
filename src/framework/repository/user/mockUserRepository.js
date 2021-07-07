@@ -1,10 +1,9 @@
-const User = require("../../entites/user");
+const User = require("../../../entites/user");
 const UserRepository = require("./userRepository");
 
-module.exports = class MockUserRepository extends UserRepository {
+class MockUserRepository extends UserRepository {
 
     constructor(){
-        console.log( "Initializing MockUserRepository...")
         super()
         this.currentId = 1
         this.users = {}
@@ -41,3 +40,5 @@ module.exports = class MockUserRepository extends UserRepository {
         })
     }
 }
+
+module.exports = new MockUserRepository()
