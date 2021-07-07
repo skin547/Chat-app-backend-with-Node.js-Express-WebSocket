@@ -5,12 +5,12 @@ chai.use(chaiAsPromised);
 
 let AuthenticationUseCase = require("../src/useCases/user/authentication")
 let AddUserUseCase = require("../src/useCases/user/addUser")
-let MockUserRepo = require("../src/framework/repository/mockUserRepository")
+let MockUserRepository = require("../src/framework/repository/user/mockUserRepository");
 
-describe( "Test user usecase", () => {
+describe( "Test authentication usecase", () => {
 
     before( async () => {
-        userRepo = new MockUserRepo()
+        userRepo = MockUserRepository
         authentication = new AuthenticationUseCase( userRepo )
         addUser = new AddUserUseCase( userRepo )
 
@@ -27,8 +27,9 @@ describe( "Test user usecase", () => {
                 email : "already@exist.com",
                 password : "test123"
             }
-            let token = await authentication.register( user.username, user.email, user.password )
-            expect( token.split(".").length ).to.equal( 3 )
+            let result = await authentication.register( user.username, user.email, user.password )
+            expect( result ).to.be.an('object')
+            expect( result.token.split(".").length ).to.equal( 3 )
         })
 
         it("should throw error when registering jwt with wrong password", async () => {
@@ -55,8 +56,8 @@ describe( "Test user usecase", () => {
                 email : "already@exist.com",
                 password : "test123"
             }
-            let token = await authentication.register( user.username, user.email, user.password )
-            let result = await authentication.verify( token )
+            let registerResult = await authentication.register( user.username, user.email, user.password )
+            let result = await authentication.verify( registerResult.token )
             expect( result ).to.have.property( "name" )
             expect( result ).to.have.property( "email" )
             expect( result ).to.not.have.property( "password" )

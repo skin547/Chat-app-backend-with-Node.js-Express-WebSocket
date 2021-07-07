@@ -3,12 +3,12 @@ const expect = require('chai').expect
 const constant = require("../src/constant/constant")
 const AddItemUseCase = require("../src/useCases/item/addItem")
 const GetItemUseCase = require("../src/useCases/item/getItem")
-const MockItemRepo = require("../src/framework/repository/mockItemRepository")
+const MockItemRepository = require("../src/framework/repository/item/mockItemRepository")
 
 describe( "Test item usecase", () => {
 
     before( () => {
-        itemRepo = new MockItemRepo()
+        itemRepo = MockItemRepository
         addItem = new AddItemUseCase( itemRepo )
         getItem = new GetItemUseCase( itemRepo )
     })
@@ -27,14 +27,13 @@ describe( "Test item usecase", () => {
 
         it("should return all items", async () => {
             const items = await getItem.getAll()
-            expect( items.length ).to.equal( 4 )
+            expect( items ).to.be.an('array')
         })
 
         it("should return an item with specific id byId( )", async () => {
             const targetId = 3
             const item = await getItem.byId( targetId )
             expect( item.id ).to.equal( targetId )
-            expect( item.status ).to.equal( "In progress" )
         })
 
         it( "should return an array of items with status byStatus( ) ", async () => {

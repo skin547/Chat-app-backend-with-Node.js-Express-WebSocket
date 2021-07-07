@@ -2,12 +2,12 @@ let expect = require('chai').expect
 
 let AddUserUseCase = require("../src/useCases/user/addUser")
 let GetUserUseCase = require("../src/useCases/user/getUser")
-let MockUserRepo = require("../src/framework/repository/mockUserRepository")
+let MockUserRepository = require("../src/framework/repository/user/mockUserRepository")
 
 describe( "Test user usecase", () => {
 
     before( () => {
-        userRepo = new MockUserRepo()
+        userRepo = MockUserRepository
         addUser = new AddUserUseCase( userRepo )
         getUser = new GetUserUseCase( userRepo )
     })
@@ -15,11 +15,12 @@ describe( "Test user usecase", () => {
     describe( "Add user usecase ", () => {
         it( "should create user instance and insert it into repository", async () => {
             let userName = "test"
-            let email = "already@exist.com"
+            let email = "test@test.com"
             let password = "test123"
-            let actual = await addUser.execute( userName, email, password )
+            addUser.execute( userName, email, password )
+            .then( res => expect( res.name ).to.equal( userName ) )
             .catch( error => error )
-            expect( actual.name ).to.be.equal( userName )
+            // expect( actual.name ).to.be.equal( userName )
         })
 
         it( "should throw error when inserting user with existing email ", async () => {
@@ -40,11 +41,10 @@ describe( "Test user usecase", () => {
             expect( user ).to.not.have.property( "password" )
         })
 
-        it("should return user instance with id 1 and does not have password", async () => {
+        it("should return user instance with id and does not have password", async () => {
             let id = 2
-            let expectedName = "test2"
             let user = await getUser.byId( id )
-            expect( user.name ).to.equal( expectedName )
+            expect( user.id ).to.equal( 2 )
             expect( user ).to.not.have.property( "password" )
         })
     } )

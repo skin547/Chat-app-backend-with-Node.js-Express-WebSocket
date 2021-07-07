@@ -1,4 +1,5 @@
-const assert = require('assert').strict
+// const assert = require('assert').strict
+const expect = require("chai").expect
 
 const User = require("../src/entites/user")
 
@@ -11,11 +12,11 @@ describe( "Test user", () => {
     
     it( "should return true if login with correct password", () => {
         password = "mypassword"
-        assert.equal( userInstance.login( password ), true )
+        expect( userInstance.login( password ) ).to.be.true
     })
     
     it( "should return false if login with wrong password", () => {
         password = "wrongpassword"
-        assert.equal( userInstance.login( password ), false )
+        expect( userInstance.login( password ) ).to.be.false
     })
 })
