@@ -1,11 +1,8 @@
 const express = require('express')
 const http = require("http")
-const WebSocket = require("ws")
 
 const apiRouter = require("./framework/web/router/apiRouter")
-
 const app = express()
-
 app.use( express.urlencoded( { extended : true } ) )
 app.use( express.json() )
 app.use('/api', apiRouter)
@@ -13,28 +10,40 @@ app.use('/api', apiRouter)
 const port = 8000
 
 const server = http.createServer( app )
-const ws = new WebSocket.Server( {server} )
 
-let clients = {}
-let id = 1
+const options =  {noServer: true, path:"/api/chat"}
+const webSocket = require("./framework/web/websocket/websocket")
+const webSocketServer = webSocket(options)
 
-ws.on( "connection", (connection) => {
-    if( !connection.id ){
-        connection.id = id
-        clients[id] = connection
-        connection.send( `here's your id: ${id}` )
-        id++
-    }
-    connection.on("message", ( message ) => {
-        data = JSON.parse( message ).data
-        console.log( data )
-        if( clients[data.to] && clients[data.from] ){
-            clients[data.to].send( data.message )
-        }else{
-            connection.send("user not connect")
+const jwt = require("./framework/utilities/jwt")
+const secretKey = require("../config").authentication.secretkey
+
+
+server.on('upgrade', (request, socket, head) => {
+    try {
+        const token = request.url.split('Bearer=')[1]
+        const decoded = jwt.verify( token, secretKey )
+        console.log( decoded )
+        if( decoded ){
+            webSocketServer.handleUpgrade(request, socket, head, function done(ws) {
+                webSocketServer.emit('connection', ws, decoded );
+            });
         }
-    })
-
+    } catch ( error ) {
+        console.log( error )
+        socket.destroy();
+        return;
+    }
 })
 
+
 module.exports = server.listen( port, () => console.log( `server running on port ${port}`) )
+
+// demo message for websocket
+// {
+//     "data":{
+//         "from":1,
+//         "to":2,
+//         "message":"Hey I'm 1"
+//     }
+// }
