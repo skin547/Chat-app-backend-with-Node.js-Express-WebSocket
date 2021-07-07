@@ -1,4 +1,4 @@
-const ItemRepository = require("../../framework/repository/itemRepository")
+const ItemRepository = require("../../framework/repository/item/itemRepository")
 
 module.exports = class GetItemUseCase {
 
@@ -7,8 +7,8 @@ module.exports = class GetItemUseCase {
         this.itemRepository = itemRepository
     }
 
-    async getAll() {
-        return this.itemRepository.getAll()
+    async getAll( queries ) {
+        return this.itemRepository.getAll( queries )
     }
 
     async byId( id ) {

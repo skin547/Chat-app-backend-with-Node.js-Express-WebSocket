@@ -1,4 +1,4 @@
-const ItemRepository = require("../../framework/repository/itemRepository")
+const ItemRepository = require("../../framework/repository/item/itemRepository")
 
 module.exports = class AddItemUseCase {
 
