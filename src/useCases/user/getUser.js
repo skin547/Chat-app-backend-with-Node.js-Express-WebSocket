@@ -1,4 +1,4 @@
-const UserRepository = require("../../framework/repository/userRepository")
+const UserRepository = require("../../framework/repository/user/userRepository")
 
 module.exports = class GetUserUseCase {
 

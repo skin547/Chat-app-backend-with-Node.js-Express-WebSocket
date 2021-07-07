@@ -10,9 +10,10 @@ module.exports = class AddUserUseCase {
             this.userRepository.getUserByEmail( email )
             .then( () => reject( { error : "email already exist" } ) )
             .catch( error => error )
-            
             let data = await this.userRepository.insert( name, email, password )
-            resolve( data )
+            resolve( {  id : data.id,
+                        name: data.name,
+                        email : data.email } )
         })
     }
 }

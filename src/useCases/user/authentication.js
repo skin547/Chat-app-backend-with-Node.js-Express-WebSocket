@@ -1,6 +1,4 @@
-const jwt = require("jsonwebtoken")
-
-const UserRepository = require("../../framework/repository/userRepository")
+const jwt = require("../../framework/utilities/jwt")
 const secretkey = require("../../../config").authentication.secretkey
 
 module.exports = class AuthenticationUseCase {
@@ -16,8 +14,8 @@ module.exports = class AuthenticationUseCase {
             this.userRepository.getUserByEmail( email )
             .then( foundUser => {
                 if( foundUser.login( password ) ){
-                    let token = jwt.sign( {name:name, email:email}, this.secretKey, { expiresIn: 60 * 60 * 24 * 7 } )
-                    resolve(token)
+                    let result = jwt.sign( {id: foundUser.id, name:name, email:email}, this.secretKey, { expiresIn: 60 * 60 * 24 * 7 } )
+                    resolve( { token : result } )
                 } else {
                     reject( new Error( "authentication failed" ) )
                 }
