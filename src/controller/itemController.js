@@ -7,9 +7,9 @@ module.exports = (itemRepo) => {
     const addItem = new AddItemUseCase( itemRepo )
 
     const getAllItems = ( request, response, next ) => {
-        getItem.getAll( )
+        getItem.getAll( request.query )
         .then( res => response.json( res ) )
-        .catch( error => next() )
+        .catch( error => next( error ) )
     }
 
     const getItemById = ( request, response, next ) => {
@@ -23,21 +23,21 @@ module.exports = (itemRepo) => {
         const owner = request.query.owner
         getItem.byOwner( owner )
         .then( res => response.json( res ) )
-        .catch( error => next() )
+        .catch( error => next( error ) )
     }
 
     const getItemByStatus = ( request, response, next ) => {
         const status = request.query.status
         getItem.byStatus( status )
         .then( res => response.json( res ) )
-        .catch( error => next() )
+        .catch( error => next( error ) )
     }
 
     const addNewItem = ( request, response, next ) => {
         const body = request.body
         addItem.execute( body.content, body.owner )
         .then( res => response.status(201).json( res ) )
-        .catch( error => next() )
+        .catch( error => next( error ) )
     }
 
     return {
