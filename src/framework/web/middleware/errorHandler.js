@@ -1,7 +1,13 @@
 errorHandler = (error, request, response, next) => {
-    console.log( error.name )
     if( error.name === "JsonWebTokenError" ){
-        response.status(401).json( error )
+        switch( error.message ){
+            case "invalid token" :
+                response.status( 401 ).json( { error : "invalid token" })
+                break;
+            case "invalid signature" :
+                response.status( 400 ).json( { error : "invalid signature" } )
+        }
+        
     }
     response.status(500).json(error);
 };
