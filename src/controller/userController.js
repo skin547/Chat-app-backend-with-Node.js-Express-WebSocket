@@ -1,12 +1,13 @@
 const AddUserUseCase = require("../useCases/user/addUser")
 const GetUserUseCase = require("../useCases/user/getUser")
 const AuthenticationUseCase = require("../useCases/user/authentication")
+const GetRoomUseCase = require("../useCases/room/getRoom")
 
-module.exports = (userRepo) => {
-
+module.exports = (userRepo, roomRepo) => {
     const getUser = new GetUserUseCase( userRepo )
     const addUser = new AddUserUseCase( userRepo )
     const authentication = new AuthenticationUseCase( userRepo )
+    const getRoom = new GetRoomUseCase( roomRepo )
 
     const signUp = ( request, response, next ) => {
         const body = request.body
@@ -29,9 +30,17 @@ module.exports = (userRepo) => {
         .catch( error => next( error) )
     }
 
+    const getRooms = ( request, response, next ) => {
+        const userId = request.params.userId
+        getRoom.byUserId( userId )
+        .then( res => response.json( res ) )
+        .catch( error => next( error ) )
+    }
+
     return {
         signUp,
         login,
-        verify
+        verify,
+        getRooms
     }
 }
