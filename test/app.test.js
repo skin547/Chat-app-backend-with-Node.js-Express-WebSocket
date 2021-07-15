@@ -173,6 +173,28 @@ describe("test express app", function(){
                         expect( response.body[0].users[0] ).to.have.property("email")
                         done()
                     })
+            
+        })
+
+        describe(" Get /users/:userId/rooms", (done) => {
+            it("should return an array of rooms with user id ", ( done ) => {
+                const userId = 100
+                request
+                .get(userEndpoint + "/" + userId + "/rooms")
+                .set({ "Authorization": `Bearer ${testUserToken}` })
+                .end((err, response) => {
+                    if( err ){
+                        throw new Error(`test failed :\n ${err}`)
+                    }
+                    expect( response ).to.have.status(200)
+                    expect( response.body ).to.be.an('array')
+                    expect( response.body.length ).to.equal( 1 )
+                    expect( response.body[0] ).to.have.property("id")
+                    expect( response.body[0] ).to.have.property("name")
+                    expect( response.body[0] ).to.have.property("users")
+                    expect( response.body[0].users ).to.be.an('array')
+                    expect( response.body[0].users[0] ).to.have.property("email")
+                    done()
                 })
             })
         })
@@ -229,18 +251,20 @@ describe("test express app", function(){
             it("will add message into a room", (done) => {
                 const roomId = 1
                 const message = {
-                    from : "frank",
-                    to : roomId,
-                    message : "hello world"
+                    roomId : roomId,
+                    content : "hello world"
                 }
                 request
                 .post(roomEndpoint)
+                .set({ "Authorization": `Bearer ${testUserToken}` })
                 .send(message)
                 .end( (err, response) => {
                     expect( response ).to.have.status(201)
                     done()
                 })
             })
+        })
+    })
         })
     })
 })
