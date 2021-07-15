@@ -1,23 +1,20 @@
 const chai = require("chai")
 const chaiHttp = require('chai-http')
 
-
 describe("test express app", function(){
-
     const expect = chai.expect
     chai.use(chaiHttp);
 
     let app
+    let request;
+    let testUser
+    let testUserToken
     const apiDomain = "/api"
     const itemEndpoint = apiDomain + "/items"
     const userEndpoint = apiDomain + "/users"
     const roomEndpoint = apiDomain + "/rooms"
-    let testUser
-    let testUserToken
 
     this.timeout(10000); 
-
-    let request;
 
     before( () => {
         app = require("../src/app")
@@ -88,10 +85,7 @@ describe("test express app", function(){
     
         describe('POST /items', () => {
             it('should return an object if created successful', (done) => {
-                let item = {
-                    content : "test",
-                    owner : "Frank"
-                }
+                let item = { content : "test", owner : "Frank" }
                 
                 request
                 .post(itemEndpoint)
@@ -118,10 +112,7 @@ describe("test express app", function(){
             it("should create a room with participated users ", ( done ) => {
                 let Alice = { id : 100, name : "Alice", email : "Alice@test.com" }
                 let Bob = { id : 200, name : "Bob", email : "Bob@test.com"  }
-                const room = {
-                    from : Alice,
-                    users : [ Alice, Bob ]
-                }
+                const room = { from : Alice, users : [ Alice, Bob ] }
                 request
                 .post(roomEndpoint)
                 .set({ "Authorization": `Bearer ${testUserToken}` })
