@@ -1,18 +1,12 @@
-const AddUserUseCase = require("../useCases/user/addUser")
-const GetUserUseCase = require("../useCases/user/getUser")
-const AuthenticationUseCase = require("../useCases/user/authentication")
 const AddRoomUseCase = require("../useCases/room/addRoom")
 const GetRoomUseCase = require("../useCases/room/getRoom")
-const ChangeRoomUseCase = require("../useCases/room/changeRoom")
+const MessageUseCase = require("../useCases/message/message")
 
 
-module.exports = (roomRepo) => {
-
-    // const getUser = new GetUserUseCase( userRepo )
-    // const addUser = new AddUserUseCase( userRepo )
-    // const authentication = new AuthenticationUseCase( userRepo )
+module.exports = (roomRepo, messageRepo) => {
     const getRoom = new GetRoomUseCase( roomRepo )
     const addRoom = new AddRoomUseCase( roomRepo )
+    const message = new MessageUseCase( messageRepo )
 
     const getAll = ( request, response, next ) => {
         const token = request.header('Authorization').replace('Bearer ', '')
@@ -36,9 +30,17 @@ module.exports = (roomRepo) => {
         .catch( error => next( error ) )
     }
 
+    const getRoomMessages = ( request, response, next ) => {
+        const roomId = request.params.roomId
+        message.getMessagesByRoomId( roomId )
+        .then( res => response.json( res ) )
+        .catch( error => next( error ) )
+    }
+
     return {
         getAll,
         createRoom,
-        getById
+        getById,
+        getRoomMessages
     }
 }
