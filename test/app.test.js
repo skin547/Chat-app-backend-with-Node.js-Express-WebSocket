@@ -1,23 +1,20 @@
 const chai = require("chai")
 const chaiHttp = require('chai-http')
 
-
 describe("test express app", function(){
-
     const expect = chai.expect
     chai.use(chaiHttp);
 
     let app
+    let request;
+    let testUser
+    let testUserToken
     const apiDomain = "/api"
     const itemEndpoint = apiDomain + "/items"
     const userEndpoint = apiDomain + "/users"
     const roomEndpoint = apiDomain + "/rooms"
-    let testUser
-    let testUserToken
 
     this.timeout(10000); 
-
-    let request;
 
     before( () => {
         app = require("../src/app")
@@ -88,10 +85,7 @@ describe("test express app", function(){
     
         describe('POST /items', () => {
             it('should return an object if created successful', (done) => {
-                let item = {
-                    content : "test",
-                    owner : "Frank"
-                }
+                let item = { content : "test", owner : "Frank" }
                 
                 request
                 .post(itemEndpoint)
@@ -118,10 +112,7 @@ describe("test express app", function(){
             it("should create a room with participated users ", ( done ) => {
                 let Alice = { id : 100, name : "Alice", email : "Alice@test.com" }
                 let Bob = { id : 200, name : "Bob", email : "Bob@test.com"  }
-                const room = {
-                    from : Alice,
-                    users : [ Alice, Bob ]
-                }
+                const room = { from : Alice, users : [ Alice, Bob ] }
                 request
                 .post(roomEndpoint)
                 .set({ "Authorization": `Bearer ${testUserToken}` })
@@ -182,6 +173,28 @@ describe("test express app", function(){
                         expect( response.body[0].users[0] ).to.have.property("email")
                         done()
                     })
+            
+        })
+
+        describe(" Get /users/:userId/rooms", (done) => {
+            it("should return an array of rooms with user id ", ( done ) => {
+                const userId = 100
+                request
+                .get(userEndpoint + "/" + userId + "/rooms")
+                .set({ "Authorization": `Bearer ${testUserToken}` })
+                .end((err, response) => {
+                    if( err ){
+                        throw new Error(`test failed :\n ${err}`)
+                    }
+                    expect( response ).to.have.status(200)
+                    expect( response.body ).to.be.an('array')
+                    expect( response.body.length ).to.equal( 1 )
+                    expect( response.body[0] ).to.have.property("id")
+                    expect( response.body[0] ).to.have.property("name")
+                    expect( response.body[0] ).to.have.property("users")
+                    expect( response.body[0].users ).to.be.an('array')
+                    expect( response.body[0].users[0] ).to.have.property("email")
+                    done()
                 })
             })
         })
@@ -238,18 +251,20 @@ describe("test express app", function(){
             it("will add message into a room", (done) => {
                 const roomId = 1
                 const message = {
-                    from : "frank",
-                    to : roomId,
-                    message : "hello world"
+                    roomId : roomId,
+                    content : "hello world"
                 }
                 request
                 .post(roomEndpoint)
+                .set({ "Authorization": `Bearer ${testUserToken}` })
                 .send(message)
                 .end( (err, response) => {
                     expect( response ).to.have.status(201)
                     done()
                 })
             })
+        })
+    })
         })
     })
 })

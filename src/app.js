@@ -8,7 +8,6 @@ app.use( express.json() )
 app.use('/api', apiRouter)
 
 const port = 8000
-
 const server = http.createServer( app )
 
 const options =  {noServer: true, path:"/api/chat"}
@@ -18,10 +17,9 @@ const webSocketServer = webSocket(options)
 const jwt = require("./framework/utilities/jwt")
 const secretKey = require("../config").authentication.secretkey
 
-
 server.on('upgrade', (request, socket, head) => {
     try {
-        const token = request.url.split('Bearer=')[1]
+        const token = request.url.split('Basic=')[1]
         const decoded = jwt.verify( token, secretKey )
         console.log( decoded )
         if( decoded ){
@@ -35,7 +33,6 @@ server.on('upgrade', (request, socket, head) => {
         return;
     }
 })
-
 
 module.exports = server.listen( port, () => console.log( `server running on port ${port}`) )
 

@@ -1,6 +1,9 @@
-module.exports = class MockClientRepository {
+const ClientRepository = require("./clientRepository")
+
+class MockClientRepository extends ClientRepository{
 
     constructor(){
+        super()
         this.clients = {}
     }
 
@@ -21,3 +24,5 @@ module.exports = class MockClientRepository {
         })
     }
 }
+
+module.exports = new MockClientRepository()
