@@ -5,7 +5,7 @@ const AddItemUseCase = require("../src/useCases/item/addItem")
 const GetItemUseCase = require("../src/useCases/item/getItem")
 const MockItemRepository = require("../src/framework/repository/item/mockItemRepository")
 
-describe( "Test item usecase", () => {
+describe( "Item usecase", () => {
 
     before( () => {
         itemRepo = MockItemRepository

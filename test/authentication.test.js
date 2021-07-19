@@ -7,7 +7,7 @@ let AuthenticationUseCase = require("../src/useCases/user/authentication")
 let AddUserUseCase = require("../src/useCases/user/addUser")
 let MockUserRepository = require("../src/framework/repository/user/mockUserRepository");
 
-describe( "Test authentication usecase", () => {
+describe( "Authentication usecase", () => {
 
     before( async () => {
         userRepo = MockUserRepository
