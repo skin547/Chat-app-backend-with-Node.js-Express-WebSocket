@@ -1,14 +1,15 @@
 module.exports = class MessageUseCase {
 
-    constructor( messageRepository ){
+    constructor( messageRepository, messageNotifier ){
         if( !messageRepository ) throw new Error( "Not giving messageRepository" )
         this.messageRepository = messageRepository
+        this.messageNotifier = messageNotifier
     }
 
-    create( content, userId, roomId ) {
+    create( content, roomId, userId ) {
         return new Promise( async (resolve, reject ) => {
             let newMessage = await this.messageRepository.insert( content, userId, roomId )
-            this.notify( newMessage.roomId, newMessage )
+            this.notify( userId, newMessage.roomId, newMessage )
             resolve(newMessage)
         })
     }
@@ -19,8 +20,8 @@ module.exports = class MessageUseCase {
         })
     }
 
-    async notify( roomId, message ) {
-        
+    async notify( senderId, roomId, message ) {
+        this.messageNotifier.notify( senderId, roomId, message )
     }
 
     getMessagesByRoomId( roomId ){
