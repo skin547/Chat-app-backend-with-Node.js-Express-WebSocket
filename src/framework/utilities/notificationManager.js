@@ -13,7 +13,7 @@ class NotificationManager{
             if( subscriber.id != senderId ){
                 console.log( subscriber )
                 this.clientRespotiory.getConnection( subscriber.id )
-                .then( connection => connection.send( message ) )
+                .then( connection => connection.send( JSON.stringify( message ) ) )
                 .catch( error => console.error( error ) )
             }
         })
