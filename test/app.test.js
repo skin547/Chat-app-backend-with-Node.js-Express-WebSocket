@@ -137,6 +137,7 @@ describe("test express app", function () {
                 const roomId = 1
                 request
                     .get(roomEndpoint + "/" + roomId)
+                    .set({ "Authorization": `Bearer ${testUserToken}` })
                     .end((err, response) => {
                         if (err) {
                             throw new Error(`test failed :\n ${err}`)
