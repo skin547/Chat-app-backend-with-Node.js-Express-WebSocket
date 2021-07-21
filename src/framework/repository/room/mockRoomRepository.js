@@ -19,8 +19,6 @@ class MockRoomRepository extends RoomRepository {
                 this.mappingTable[userId] = newRoom.id
             }
             this.currentId = this.currentId + 1
-            console.log( this.rooms )
-            console.log( this.mappingTable )
             resolve( newRoom )
         })
     }
@@ -30,7 +28,7 @@ class MockRoomRepository extends RoomRepository {
             if( this.rooms[id] ){
                 resolve( this.rooms[id] )
             }else{
-                reject(new Error( "user not found"))
+                reject(new Error( "room not found"))
             }
         })
     }
@@ -55,7 +53,7 @@ class MockRoomRepository extends RoomRepository {
                 roomInstance.users.forEach( user => this.mappingTable[user.id] = roomInstance.id )
                 resolve( this.rooms[id] )
             }else{
-                reject(new Error( "user not found"))
+                reject(new Error( "room not found"))
             }
         })
     }
