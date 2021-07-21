@@ -1,9 +1,9 @@
 module.exports = class MessageUseCase {
 
-    constructor( messageRepository, messageNotifier ){
+    constructor( messageRepository, notificationManager ){
         if( !messageRepository ) throw new Error( "Not giving messageRepository" )
         this.messageRepository = messageRepository
-        this.messageNotifier = messageNotifier
+        this.notificationManager = notificationManager
     }
 
     create( content, roomId, userId ) {
@@ -21,7 +21,7 @@ module.exports = class MessageUseCase {
     }
 
     async notify( senderId, roomId, message ) {
-        this.messageNotifier.notify( senderId, roomId, message )
+        this.notificationManager.notify( senderId, roomId, message )
     }
 
     getMessagesByRoomId( roomId ){
