@@ -8,10 +8,10 @@ let MockRoomRepo = require("../src/framework/repository/room/mockRoomRepository"
 describe( "Room user usecase", () => {
 
     before( () => {
-        // roomRepo = MockRoomRepo
-        addRoom = new AddRoomUseCase( MockRoomRepo )
-        getRoom = new GetRoomUseCase( MockRoomRepo )
-        changeRoom = new ChangeRoomUseCase( MockRoomRepo )
+        roomRepo = MockRoomRepo
+        addRoom = new AddRoomUseCase( roomRepo )
+        getRoom = new GetRoomUseCase( roomRepo )
+        changeRoom = new ChangeRoomUseCase( roomRepo )
     })
 
     describe("Add room use case", () => {
