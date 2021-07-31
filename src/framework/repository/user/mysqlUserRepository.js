@@ -23,7 +23,7 @@ class MySqlUserRepository extends UserRepository {
     getAll(){
         return new Promise( async ( resolve ) => {
             let result = await this.userModel.findAll({})
-            let users = result.map( item => item.dataValues )
+            let users = result.map( item => item.toJSON() )
             resolve( users )
         })
     }
@@ -34,7 +34,7 @@ class MySqlUserRepository extends UserRepository {
                 where:{ email: email }
             })
             if( !result ) return reject( { error : "user not found" } )
-            let user = result.dataValues
+            let user = result.toJSON()
             let userInstance = new User( user.id, user.name, user.email, user.password )
             resolve( userInstance )
         })
@@ -44,7 +44,7 @@ class MySqlUserRepository extends UserRepository {
         return new Promise( async ( resolve, reject ) => {
             let result = await this.userModel.findOne( { where:{ id: id } })
             if( result === null ) return resolve( {} )
-            let user = result.dataValues
+            let user = result.toJSON()
             let userInstance = new User( user.id, user.name, user.email, user.password )
             resolve( userInstance )
         })
