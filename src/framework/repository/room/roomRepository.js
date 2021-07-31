@@ -11,4 +11,12 @@ module.exports = class RoomRepository {
     getRoomById( id ){
         throw new Error( "not implemented" )
     }
+
+    getRoomsByUserId( id ){
+        throw new Error( "not implemented" )
+    }
+
+    removeRoomById( id ){
+        throw new Error( "not implemented" )
+    }
 }
