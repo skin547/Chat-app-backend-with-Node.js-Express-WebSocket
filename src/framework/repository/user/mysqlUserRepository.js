@@ -1,14 +1,15 @@
 const { v4: uuidv4 } = require("uuid")
 const User = require("../../../entites/user")
 const UserRepository = require("./userRepository")
-const sequelize = require("../../orm/sequelize.js")
+const Database = require("../../orm/database.js")
 
 class MySqlUserRepository extends UserRepository {
 
     constructor(){
         super()
-        this.database = sequelize.database
-        this.userModel = sequelize.userModel
+        let database = new Database()
+        this.databaseInstance = database.instance
+        this.userModel = database.userModel
     }
 
     insert( name, email, password ){
