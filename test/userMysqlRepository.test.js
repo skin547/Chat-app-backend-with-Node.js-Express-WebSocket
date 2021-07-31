@@ -15,7 +15,7 @@ describe("User MySQL repository test", function() {
 
     after( async () => {
         await userRepo.removeUserByName("Test")
-        userRepo.database.close()
+        await userRepo.databaseInstance.close()
     })
 
     it("can insert new user into database", async () => {
@@ -34,15 +34,6 @@ describe("User MySQL repository test", function() {
     it("can get instance of user with email", async () => {
         let user = await userRepo.getUserByEmail("frank@frank.com")
         expect( user.login( "test1234" ) ).to.be.true
-    })
-
-    it("can handle 1000 insertion", async () => {
-        let origin = await userRepo.getAll()
-        for( let i = 0 ; i < 1000 ; i++ ){
-            await userRepo.insert("Test","test@test.com","testestest")
-        }
-        let users = await userRepo.getAll()
-        expect( users.length ).to.equal( origin.length+1000 )
     })
 
     it("can remove user from database with id", async () => {
