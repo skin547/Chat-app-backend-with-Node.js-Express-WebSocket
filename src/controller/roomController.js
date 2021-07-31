@@ -10,7 +10,7 @@ module.exports = (roomRepo, messageRepo) => {
 
     const getAll = ( request, response, next ) => {
         const token = request.header('Authorization').replace('Bearer ', '')
-        getRoom.getAllByUserId( token.id )
+        getRoom.byUserId( token.id )
         .then( res => response.json( res ) )
         .catch( error => next( error ) )
     }
