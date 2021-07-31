@@ -17,8 +17,7 @@ module.exports = (roomRepo, messageRepo) => {
 
     const createRoom = ( request, response, next ) => {
         const body = request.body
-        const token = request.header('Authorization').replace('Bearer ', '')
-        addRoom.execute( body.users, token.name )
+        addRoom.execute( body.users, body.name )
         .then( res => response.status(201).json( res ) )
         .catch( error => next( error ) )
     }
