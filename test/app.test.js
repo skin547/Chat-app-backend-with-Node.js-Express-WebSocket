@@ -108,6 +108,23 @@ describe("test express app", function () {
 
     describe("rooms API", () => {
         describe('POST /rooms', () => {
+            it("should return 401 unauthorized without authentication token", (done) => {
+                let Alice = { id: 100, name: "Alice", email: "Alice@test.com" }
+                let Bob = { id: 200, name: "Bob", email: "Bob@test.com" }
+                const room = { from: Alice, users: [Alice, Bob] }
+
+                request
+                    .post(roomEndpoint)
+                    .send(room)
+                    .end((err, response) => {
+                        if (err) {
+                            throw new Error(`test failed :\n ${err}`)
+                        }
+                        expect(response).to.have.status(401)
+                        done()
+                    })
+            })
+
             it("should create a room with participated users ", (done) => {
                 let Alice = { id: 100, name: "Alice", email: "Alice@test.com" }
                 let Bob = { id: 200, name: "Bob", email: "Bob@test.com" }
@@ -133,6 +150,19 @@ describe("test express app", function () {
         })
 
         describe('GET /rooms', () => {
+            it("should return 401 unauthorized without authentication token", (done) => {
+                const roomId = 1
+                request
+                    .get(roomEndpoint + "/" + roomId)
+                    .end((err, response) => {
+                        if (err) {
+                            throw new Error(`test failed :\n ${err}`)
+                        }
+                        expect(response).to.have.status(401)
+                        done()
+                    })
+            })
+
             it("should return an json of room with room id ", (done) => {
                 const roomId = 1
                 request
@@ -222,8 +252,24 @@ describe("test express app", function () {
             })
         })
     })
+
     describe("messages API", () => {
         describe('POST /messages', () => {
+            it("should return 401 unauthorized without authentication token", (done) => {
+                const roomId = 1
+                const message = {
+                    roomId: roomId,
+                    content: "hello world"
+                }
+                request
+                    .post(roomEndpoint)
+                    .send(message)
+                    .end((err, response) => {
+                        expect(response).to.have.status(401)
+                        done()
+                    })
+            })
+
             it("will add message into a room", (done) => {
                 const roomId = 1
                 const message = {
