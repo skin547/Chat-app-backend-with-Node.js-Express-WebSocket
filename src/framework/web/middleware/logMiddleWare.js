@@ -1,10 +1,12 @@
-logger = (request, response, next) => {
+const logger = require("../../utilities/logger")
+
+logMiddleWare = (request, response, next) => {
     from = request.headers['x-forwarded-for'] || request.connection.remoteAddress
     date = new Date().toLocaleString()
     method = request.method
     url = request.url
-    console.log(`${date} | ${from} | ${method} ${url}`);
+    logger.info(`${date} | ${from} | ${method} ${url}`)
     next();
 };
 
-module.exports = logger;
+module.exports = logMiddleWare;
