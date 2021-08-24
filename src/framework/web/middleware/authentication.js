@@ -10,7 +10,6 @@ module.exports = ( request, response, next ) => {
         request.token = decoded
         next()
     } catch ( error ){
-        console.error( error )
         response.status(401).json( { error : error.message} )
     }
 }
