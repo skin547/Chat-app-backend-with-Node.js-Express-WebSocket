@@ -1,4 +1,7 @@
+const logger = require("../../utilities/logger")
+
 errorHandler = (error, request, response, next) => {
+    logger.log( {level:'error', message: error} )
     if( error.name === "JsonWebTokenError" ){
         switch( error.message ){
             case "invalid token" :
