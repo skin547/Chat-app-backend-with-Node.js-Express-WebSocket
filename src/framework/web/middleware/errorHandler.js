@@ -11,7 +11,10 @@ errorHandler = (error, request, response, next) => {
         }
         
     }
-    response.status(500).json(error);
+    if( error.error === "room not found" ) return response.status( 404 ).json( error )
+    if( error.error === "user not found" ) return response.status( 404 ).json( error )
+    if( error.error === "email already exist" ) return response.status( 409 ).json( error )
+    response.status(500).json( error );
 };
 
 module.exports = errorHandler
