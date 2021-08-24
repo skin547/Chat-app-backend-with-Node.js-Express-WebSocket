@@ -1,19 +1,19 @@
 const express = require("express")
 
 const UserController = require("../../../controller/userController")
-const mockRoomRepository = require("../../repository/room/mockRoomRepository")
-const mockUserRepository = require("../../repository/user/mockUserRepository")
-const mysqlUserRepository = require("../../repository/user/mysqlUserRepository")
 
 userRouter = () => {
     const router = express.Router()
     let userRepo
+    let roomRepo
     if( process.env.NODE_ENV === 'production'){
-        userRepo = mysqlUserRepository
+        userRepo = require("../../repository/user/mysqlUserRepository")
+        roomRepo = require("../../repository/room/mysqlRoomRepository")
     } else {
-        userRepo = mockUserRepository
+        userRepo = require("../../repository/user/mockUserRepository")
+        roomRepo = require("../../repository/room/mockRoomRepository")
     }
-    const roomRepo = mockRoomRepository
+     
     let userController = UserController( userRepo, roomRepo )
 
     router.post("/signup", userController.signUp )
