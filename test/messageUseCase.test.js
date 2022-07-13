@@ -27,7 +27,6 @@ describe( "Message use case", () => {
         it("should return messages from a room", async () => {
             const roomId = 1
             let messages = await message.getMessagesByRoomId( roomId )
-            console.log( messages )
             expect( messages ).to.be.an('array')
             expect( messages[0].roomId ).to.equal( 1 )
         })

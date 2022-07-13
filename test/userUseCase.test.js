@@ -4,7 +4,7 @@ let AddUserUseCase = require("../src/useCases/user/addUser")
 let GetUserUseCase = require("../src/useCases/user/getUser")
 let MockUserRepository = require("../src/framework/repository/user/mockUserRepository")
 
-describe( "Test user usecase", () => {
+describe( "User usecase", () => {
 
     before( () => {
         userRepo = MockUserRepository

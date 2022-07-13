@@ -5,18 +5,15 @@ module.exports = class GetRoomUseCase {
         this.roomRepository = roomRepository
     }
 
-    async getAllByUserId( userId ){
-        let result = await this.roomRepository.getRoomsByUserId( userId )
-        return result
-    }
-
     async byId( id ) {
         let result = await this.roomRepository.getRoomById( id )
+        .catch( error => error )
         return result
     }
 
     async byUserId( userId ){
         let result = await this.roomRepository.getRoomsByUserId( userId )
+        .catch( error => error )
         return result
     }
 }

@@ -10,15 +10,14 @@ module.exports = (roomRepo, messageRepo) => {
 
     const getAll = ( request, response, next ) => {
         const token = request.header('Authorization').replace('Bearer ', '')
-        getRoom.getAllByUserId( token.id )
+        getRoom.byUserId( token.id )
         .then( res => response.json( res ) )
         .catch( error => next( error ) )
     }
 
     const createRoom = ( request, response, next ) => {
         const body = request.body
-        const token = request.header('Authorization').replace('Bearer ', '')
-        addRoom.execute( body.users, token.name )
+        addRoom.execute( body.users, body.name )
         .then( res => response.status(201).json( res ) )
         .catch( error => next( error ) )
     }

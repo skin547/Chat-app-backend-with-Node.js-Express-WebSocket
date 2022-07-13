@@ -7,9 +7,9 @@ module.exports = class AddUserUseCase {
 
     execute( name, email, password ) {
         return new Promise( async ( resolve, reject ) => {
-            this.userRepository.getUserByEmail( email )
-            .then( () => reject( { error : "email already exist" } ) )
-            .catch( error => error )
+            let exist = await this.userRepository.getUserByEmail( email )
+            .catch( error => false )
+            if( exist ) return reject( { error : "email already exist" } )
             let data = await this.userRepository.insert( name, email, password )
             resolve( {  id : data.id,
                         name: data.name,
